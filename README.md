@@ -45,55 +45,6 @@ git clone https://github.com/cloudnativeplayground/energy-consumption-dashboard.
 cd energy-consumption-dashboard
 ```
 
-Sure! Here's the **README** file in plain text format:
-
-```
-Energy Consumption Dashboard
-============================
-
-Overview
---------
-The **Energy Consumption Dashboard** is an open-source Java application designed to monitor and optimize energy usage. It provides real-time tracking of energy consumption, alerts based on usage patterns, and integrates with **InfluxDB** for storing usage data. The dashboard is built using **Spring Boot**, **Thymeleaf**, and **Kubernetes** for deployment, and it is designed to scale in a cloud-native environment.
-
-Features
---------
-- **Real-time energy usage tracking**.
-- **Alerting** based on usage thresholds.
-- Integration with **InfluxDB** for storing energy usage data.
-- UI built with **Thymeleaf** templates.
-- **Spring Boot** backend with **Swagger** UI for API documentation.
-- Deployed using **Kubernetes** for scalability.
-- **Actuator endpoints** for monitoring the application health and performance.
-
-Tech Stack
------------
-- **Backend**: Spring Boot (Java)
-- **Database**: InfluxDB
-- **Frontend**: Thymeleaf, HTML, CSS, JavaScript
-- **API Documentation**: Swagger
-- **Deployment**: Kubernetes
-- **Monitoring**: Spring Boot Actuator
-
-Prerequisites
--------------
-Before running this application, ensure that the following are installed:
-
-- Java 8 or above
-- Maven
-- Docker (for containerization)
-- Kubernetes (for orchestration)
-- InfluxDB (for storing energy usage data)
-
-Setup Instructions
-------------------
-
-### 1. Clone the Repository
-Clone this repository to your local machine:
-
-```bash
-git clone https://github.com/cloudnativeplayground/energy-consumption-dashboard.git
-cd energy-consumption-dashboard
-```
 
 ### 2. Configure InfluxDB
 Make sure InfluxDB is installed and running. You can use Docker to start an InfluxDB container:
