@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: energy-consumption-dashboard
+  labels:
+    app: energy-consumption-dashboard
+spec:
+  replicas: 1  # Number of replicas you want
+  selector:
+    matchLabels:
+      app: energy-consumption-dashboard
+  template:
+    metadata:
+      labels:
+        app: energy-consumption-dashboard
+    spec:
+      containers:
+        - name: energy-consumption-dashboard
+          image: energy-consumption-dashboard:latest  # Your Docker image
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config  # Mount the volume at a path inside the container
+              readOnly: true
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: "file:/config/application.properties"  # Spring Boot will pick up this file
+      volumes:
+        - name: config-volume
+          configMap:
+            name: energy-consumption-dashboard-config  # Reference the ConfigMap here
+

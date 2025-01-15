@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: energy-consumption-dashboard-config
+  namespace: default  # Change this if you're using a specific Kubernetes namespace
+  labels:
+    app: energy-consumption-dashboard
+data:
+  application.properties: |
+    # ================================
+    # General Spring Boot Configuration
+    # ================================
+    spring.application.name=energy-consumption-dashboard
+    server.port=8080
+
+    # ================================
+    # InfluxDB Configuration
+    # ================================
+    spring.influx.url=http://influxdb:8086
+    spring.influx.username=user
+    spring.influx.password=password
+    spring.influx.database=energy_usage
+
+    # ================================
+    # Swagger Configuration (for API documentation)
+    # ================================
+    springfox.documentation.enabled=true
+    springfox.documentation.swagger.v2.path=/swagger-api-docs
+    swagger.title=Energy Consumption Dashboard API
+    swagger.description=API documentation for monitoring and optimizing energy usage.
+    swagger.version=1.0.0
+
+    # ================================
+    # Logging Configuration
+    # ================================
+    logging.level.org.springframework.web=INFO
+    logging.level.com.example.energyconsumption=DEBUG
+
+    # ================================
+    # Profiles and Additional Configuration (Optional)
+    # ================================
+    spring.profiles.active=docker
+
+    # ================================
+    # Security Configuration (Optional)
+    # ================================
+    # spring.security.user.name=admin
+    # spring.security.user.password=secret
+ 

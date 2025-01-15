@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Energy Consumption Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            padding-top: 50px;
+        }
+        .card {
+            margin-bottom: 30px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .statistics-card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+        .chart-container {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Energy Consumption Dashboard</h1>
+        <p>Monitor and Optimize Energy Usage</p>
+    </div>
+
+    <!-- Statistics Card -->
+    <div class="card statistics-card">
+        <div class="card-body">
+            <h5 class="card-title">Energy Usage Statistics</h5>
+            <p id="energy-stats">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Chart Card -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Energy Consumption Over Time</h5>
+            <div class="chart-container">
+                <canvas id="energyChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alerts Card -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Alerts</h5>
+            <div id="alerts">
+                <p>No alerts at the moment.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include JS libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+<script>
+    // Function to fetch energy usage statistics and render them on the page
+    function fetchEnergyStatistics() {
+        $.get("/api/energy-usage/statistics", function(data) {
+            $("#energy-stats").html(data);
+        });
+    }
+
+    // Function to fetch energy usage over time and render the chart
+    function fetchEnergyConsumptionChart() {
+        $.get("/api/energy-usage/all", function(data) {
+            const timestamps = data.map(item => new Date(item.timestamp).toLocaleTimeString());
+            const consumption = data.map(item => item.powerConsumption);
+
+            const ctx = document.getElementById('energyChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timestamps,
+                    datasets: [{
+                        label: 'Energy Consumption (W)',
+                        data: consumption,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Power Consumption (W)'
+                            }
+                        }
+                    }
+                });
+        });
+    }
+
+    // Function to fetch any energy usage alerts
+    function fetchAlerts() {
+        $.get("/api/alerts", function(data) {
+            if (data.length > 0) {
+                const alertsHtml = data.map(alert => `<p class="text-danger">${alert}</p>`).join('');
+                $("#alerts").html(alertsHtml);
+            } else {
+                $("#alerts").html('<p>No alerts at the moment.</p>');
+            }
+        });
+    }
+
+    // Fetch data on page load
+    $(document).ready(function() {
+        fetchEnergyStatistics();
+        fetchEnergyConsumptionChart();
+        fetchAlerts();
+    });
+</script>
+
+</body>
+</html>
+

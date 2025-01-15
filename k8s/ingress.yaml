@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: energy-consumption-dashboard-ingress
+  namespace: default  # Change this if you're using a specific namespace
+  labels:
+    app: energy-consumption-dashboard
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /  # If using NGINX Ingress Controller, rewrite to the root
+spec:
+  rules:
+    - host: your-domain.com  # Replace this with your domain name
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: energy-consumption-dashboard-service  # Name of the Service to route traffic to
+                port:
+                  number: 8080  # Port where the Spring Boot application is exposed
+  # TLS configuration for HTTPS (optional)
+  # If you want to enable HTTPS, uncomment the section below and provide your certificate and key
+  # tls:
+  #   - hosts:
+  #       - your-domain.com
+  #     secretName: your-tls-secret  # The name of the secret containing your TLS certificate
+
